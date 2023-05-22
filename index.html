@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <meta name="description" content="Text to Speech Demo in browser using Web Speech API" />
+    <meta name="theme-color" content="#fd0" />
+    <title>Text to Speech Demo</title>
+    <link rel="icon" type="image/png" href="icon.png" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <link rel="stylesheet" href="src/ttsdemo.css" />
+    <script type="module" src="src/ttsdemo.js"></script>
+  </head>
+  <body>
+    <form class="SpeakForm">
+      <header class="TitleOutput"></header>
+      <textarea class="TextInput" placeholder="Enter text to speech" required></textarea>
+      <nav>
+        <select class="LangSelect"></select>
+        <select class="VoiceSelect"></select>
+      </nav>
+      <nav>
+        <select class="PitchSelect"></select>
+        <select class="RateSelect"></select>
+        <select class="VolumeSelect"></select>
+      </nav>
+      <nav>
+        <button>▶️ Speak</button>
+        <button class="StopButton" type="button">⏹ Stop</button>
+      </nav>
+    </form>
+  </body>
+</html>
