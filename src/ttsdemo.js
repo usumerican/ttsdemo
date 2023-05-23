@@ -1,6 +1,8 @@
 /* eslint-env browser */
 
 onload = async () => {
+  onunhandledrejection = (ev) => alert(ev.reason || ev);
+
   const appTitle = document.title;
   const textInput = document.querySelector('.TextInput');
   const langSelect = document.querySelector('.LangSelect');
@@ -9,9 +11,10 @@ onload = async () => {
   const rateSelect = document.querySelector('.RateSelect');
   const volumeSelect = document.querySelector('.VolumeSelect');
   const voicesMap = new Map();
+  const langNames = new Intl.DisplayNames([], { type: 'language' });
 
   for (const voice of (await getVoices()).sort((a, b) => a.lang.localeCompare(b.lang))) {
-    const lang = voice.lang;
+    const lang = normalizeLang(voice.lang);
     let voices = voicesMap.get(lang);
     if (!voices) {
       voices = [];
@@ -21,7 +24,11 @@ onload = async () => {
   }
 
   document.querySelector('.TitleOutput').textContent = appTitle;
-  langSelect.replaceChildren(...['', ...voicesMap.keys()].map((value) => new Option('Lang: ' + value, value)));
+  langSelect.replaceChildren(
+    ...['', ...voicesMap.keys()].map((value) => {
+      return new Option('Lang:' + (value ? ' [' + value + '] ' + translateLang(value) : ''), value);
+    })
+  );
   pitchSelect.replaceChildren(
     ...[...Array(21)].map((_, i) => {
       const value = (i / 10).toFixed(1);
@@ -44,7 +51,7 @@ onload = async () => {
   const searchParams = new URLSearchParams(location.search);
   textInput.value = searchParams.get('text') || '';
   updateDocumentTitle();
-  langSelect.value = searchParams.get('lang') || '';
+  langSelect.value = normalizeLang(searchParams.get('lang') || '');
   updateVoiceSelect();
   voiceSelect.value = searchParams.get('voiceURI') || '';
   setSelectValue(pitchSelect, searchParams.get('pitch'), '1.0');
@@ -52,7 +59,8 @@ onload = async () => {
   setSelectValue(volumeSelect, searchParams.get('volume'), '1.0');
 
   visualViewport.onresize = () => {
-    document.body.style.height = visualViewport.height + 'px';
+    document.documentElement.style.height = visualViewport.height + 'px';
+    document.documentElement.scrollTop = 0;
   };
 
   onpagehide = () => {
@@ -69,7 +77,7 @@ onload = async () => {
     const rate = rateSelect.value;
     const volume = volumeSelect.value;
     const uttr = new SpeechSynthesisUtterance(text);
-    uttr.lang = lang;
+    uttr.lang = normalizeLang(lang);
     uttr.voice = voicesMap.get(lang)?.find((voice) => voice.voiceURI === voiceURI);
     uttr.pitch = parseFloat(pitch);
     uttr.rate = parseFloat(rate);
@@ -99,6 +107,14 @@ onload = async () => {
     const text = textInput.value;
     const len = 30;
     document.title = text ? (text.length > len ? text.slice(0, len - 1) + '…' : text) : appTitle;
+  }
+
+  function translateLang(lang) {
+    try {
+      return langNames.of(lang);
+    } catch {
+      return lang;
+    }
   }
 };
 
@@ -130,4 +146,15 @@ function getVoices() {
 
 function stopSpeaking() {
   speechSynthesis.cancel();
+}
+
+function normalizeLang(lang) {
+  if (lang.includes('_')) {
+    const tags = lang.split(/[^0-9a-zA-Z]+/);
+    if (tags.length > 2) {
+      [tags[1], tags[2]] = [tags[2], tags[1]];
+    }
+    lang = tags.join('-');
+  }
+  return lang;
 }

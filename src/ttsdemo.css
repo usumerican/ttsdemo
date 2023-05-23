@@ -21,7 +21,7 @@ form {
   padding: 4px;
   display: grid;
   gap: 4px;
-  grid-template-rows: 2rem 1fr 3rem 3rem 3rem;
+  grid-template-rows: 2rem 1fr 3rem 3rem 3rem 3rem;
 }
 
 button {
@@ -43,6 +43,7 @@ nav {
 select {
   cursor: pointer;
   appearance: menulist-button;
+  width: 100%;
 }
 
 textarea {
