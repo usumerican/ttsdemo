@@ -9,6 +9,7 @@
 html {
   background: #ffc;
   height: 100%;
+  touch-action: manipulation;
 }
 
 body {
@@ -31,6 +32,18 @@ button {
 header {
   display: grid;
   place-items: center;
+}
+
+label {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: 4rem 1fr;
+}
+
+span {
+  display: grid;
+  place-items: center left;
+  padding: 2px;
 }
 
 nav {

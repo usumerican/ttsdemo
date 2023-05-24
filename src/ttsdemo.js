@@ -1,4 +1,5 @@
 /* eslint-env browser */
+/* global __APP_VERSION__ */
 
 onload = async () => {
   onunhandledrejection = (ev) => alert(ev.reason || ev);
@@ -23,10 +24,10 @@ onload = async () => {
     voices.push(voice);
   }
 
-  document.querySelector('.TitleOutput').textContent = appTitle;
+  document.querySelector('.TitleOutput').textContent = appTitle + ' ' + __APP_VERSION__;
   langSelect.replaceChildren(
     ...['', ...voicesMap.keys()].map((value) => {
-      return new Option('Lang:' + (value ? ' [' + value + '] ' + translateLang(value) : ''), value);
+      return new Option(value ? ' [' + value + '] ' + translateLang(value) : '', value);
     })
   );
   pitchSelect.replaceChildren(
@@ -98,7 +99,7 @@ onload = async () => {
   function updateVoiceSelect() {
     voiceSelect.replaceChildren(
       ...[{ name: '', localService: true, voiceURI: '' }, ...(voicesMap.get(langSelect.value) || [])].map(
-        (voice) => new Option('Voice: ' + voice.name + (voice.localService ? '' : ' (Remote)'), voice.voiceURI)
+        (voice) => new Option(voice.name + (voice.localService ? '' : ' (Remote)'), voice.voiceURI)
       )
     );
   }

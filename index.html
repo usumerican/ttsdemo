@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <head prefix="og: http://ogp.me/ns# website: http://ogp.me/ns/website#">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
     <meta name="description" content="Text to Speech Demo in browser using Web Speech API" />
     <meta name="theme-color" content="#fd0" />
-    <title>Text to Speech Demo</title>
+    <meta property="og:url" content="https://usumerican.github.io/ttsdemo/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://usumerican.github.io/ttsdemo/icon.png" />
+    <meta property="og:title" content="TTS Demo - Text to Speech Demo in browser using Web Speech API" />
+    <meta property="og:description" content="Text to Speech Demo in browser using Web Speech API" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@usumerican" />
+    <title>TTS Demo</title>
+    <link rel="canonical" href="https://usumerican.github.io/ttsdemo/" />
     <link rel="icon" type="image/png" href="icon.png" />
     <link rel="apple-touch-icon" href="icon.png" />
     <link rel="stylesheet" href="src/ttsdemo.css" />
@@ -15,8 +23,14 @@
     <form class="SpeakForm">
       <header class="TitleOutput"></header>
       <textarea class="TextInput" placeholder="Enter text to speech" required></textarea>
-      <select class="LangSelect"></select>
-      <select class="VoiceSelect"></select>
+      <label>
+        <span>Lang:</span>
+        <select class="LangSelect"></select>
+      </label>
+      <label>
+        <span>Voice:</span>
+        <select class="VoiceSelect"></select>
+      </label>
       <nav>
         <select class="PitchSelect"></select>
         <select class="RateSelect"></select>
